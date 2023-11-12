@@ -184,7 +184,7 @@ class TuyaDeviceManager:
         logger.debug(f"mq _on_device_report-> {status}")
         for item in status:
             if "code" in item and "value" in item:
-                code = item["code"]
+                code = item["code"].lower()
                 value = item["value"]
                 device.status[code] = value
 
@@ -243,7 +243,7 @@ class TuyaDeviceManager:
                 status = {}
                 for item_status in device.status:
                     if "code" in item_status and "value" in item_status:
-                        code = item_status["code"]
+                        code = item_status["code"].lower()
                         value = item_status["value"]
                         status[code] = value
                 device.status = status
@@ -279,7 +279,7 @@ class TuyaDeviceManager:
             device_id = item["id"]
             for status in item["status"]:
                 if "code" in status and "value" in status:
-                    code = status["code"]
+                    code = status["code"].lower()
                     value = status["value"]
                     device = self.device_map[device_id]
                     device.status[code] = value
@@ -298,12 +298,12 @@ class TuyaDeviceManager:
                 result = response.get("result", {})
                 function_map = {}
                 for function in result["functions"]:
-                    code = function["code"]
+                    code = function["code"].lower()
                     function_map[code] = TuyaDeviceFunction(**function)
 
                 status_range = {}
                 for status in result["status"]:
-                    code = status["code"]
+                    code = status["code"].lower()
                     status_range[code] = TuyaDeviceStatusRange(**status)
 
                 device.function = function_map
